@@ -2,7 +2,18 @@
 
 import * as fs from "fs";
 
+class CheckError {
+    word: string;
+    lineIndex: number;
+    wordIndex: number;
+    constructor(word, lineIndex, wordIndex) {
+        this.word = word;
+        this.lineIndex = lineIndex;
+        this.wordIndex = wordIndex;
+    }
+}
 class Checker {
+    // hash search is faster O(1) than array.indexOf O(n)
     private topWords: {[key: string]: boolean} = {};
     constructor(filename: string) {
         const file = fs.readFileSync(filename).toString();
@@ -14,17 +25,15 @@ class Checker {
         return this.topWords[word] === true;
     }
     validates(text: string) {
-        let errors = [];
+        let errors: CheckError[] = [];
         const lines = text.split("\n");
         lines.forEach((line, lineIndex) => {
             let wordIndex = 0;
             const words = line.split(" ");
             words.forEach(word => {
+                wordIndex = line.indexOf(word, wordIndex);
                 if (!this.contains(word)) {
-                    wordIndex = line.indexOf(word, wordIndex);
-                    errors.push({word: word, lineIndex: lineIndex, wordIndex: wordIndex});
-                } else {
-                    wordIndex = line.indexOf(word, wordIndex);
+                    errors.push(new CheckError(word, lineIndex, wordIndex));
                 }
             });
         });
@@ -35,8 +44,3 @@ class Checker {
 let c = new Checker("./1-1000.txt");
 const txt = "this document is an example for top  1000 words used in English";
 
-console.time("validates");
-for (let i = 0; i < 1; i++) {
-    console.log( c.validates(txt) );
-}
-console.timeEnd("validates");

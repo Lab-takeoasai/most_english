@@ -2,11 +2,18 @@
   "name": "most_english",
   "version": "1.0.0",
   "description": "https://gist.github.com/deekayen/4148741#file-1-1000-txt",
-  "main": "src/check.js",
+  "main": "build/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT"
+  "author": "takeo asai",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-typescript": "^2.12.1"
+  }
 }
