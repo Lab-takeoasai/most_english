@@ -4,7 +4,8 @@ var typescript = require('gulp-typescript');
 var concat = require('gulp-concat');
 var notify = require("gulp-notify");
 var plumber = require('gulp-plumber');
-
+var mocha = require('gulp-mocha');
+var espowerTypescript = require('espower-typescript/guess');
 
 var typescriptProject = typescript.createProject({
   target: "ES5", 
@@ -13,7 +14,8 @@ var typescriptProject = typescript.createProject({
 });
 
 var paths = {
-    ts: ['src/*.ts']
+    ts: ['src/*.ts'],
+    test: ['test/*.ts']
 };
 
 gulp.task('build', function(done) {
@@ -24,3 +26,20 @@ gulp.task('build', function(done) {
     .pipe(gulp.dest('./build'))
     .on('end', done);
 });
+
+gulp.task('mocha', function(done) {
+    gulp.src(paths.test)
+    .pipe(mocha({
+        reporter: 'nyan',
+        compilers: { ts: espowerTypescript }
+      }))
+    .on('end', done);
+});
+
+gulp.task('test', function(done) {
+    // mocha --compilers ts:espower-typescript/guess test/**/*.ts
+})
+
+gulp.task('watch', function(done) {
+    gulp.watch(path.ts, 'build');
+})

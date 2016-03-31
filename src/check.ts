@@ -2,7 +2,7 @@
 
 import * as fs from "fs";
 
-class CheckError {
+export class CheckError {
     word: string;
     lineIndex: number;
     wordIndex: number;
@@ -12,7 +12,7 @@ class CheckError {
         this.wordIndex = wordIndex;
     }
 }
-class Checker {
+export class Checker {
     // hash search is faster O(1) than array.indexOf O(n)
     private topWords: {[key: string]: boolean} = {};
     constructor(filename: string) {
@@ -40,7 +40,3 @@ class Checker {
         return errors;
     }
 }
-
-let c = new Checker("./1-1000.txt");
-const txt = "this document is an example for top  1000 words used in English";
-
