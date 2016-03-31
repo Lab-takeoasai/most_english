@@ -8,14 +8,14 @@ var mocha = require('gulp-mocha');
 var espowerTypescript = require('espower-typescript/guess');
 
 var typescriptProject = typescript.createProject({
-  target: "ES5", 
-  removeComments: true, 
-  sortOutput: true
+    target: "ES5", 
+    removeComments: true, 
+    sortOutput: true
 });
 
 var paths = {
     ts: ['src/*.ts'],
-    test: ['test/*.ts']
+    test: ['test/*.ts', 'src/*.ts']
 };
 
 gulp.task('build', function(done) {
@@ -27,16 +27,19 @@ gulp.task('build', function(done) {
     .on('end', done);
 });
 
-gulp.task('mocha', function(done) {
+gulp.task('mocha', function() {
     gulp.src(paths.test)
+    .pipe(plumber({errorHandler: notify.onError('Error: mocha')}))
+    .pipe(typescript(typescriptProject))
+    .pipe(concat("test.js"))
+    .pipe(gulp.dest('./build'))
+
     .pipe(mocha({
-        reporter: 'nyan',
-        compilers: { ts: espowerTypescript }
-      }))
-    .on('end', done);
+        reporter: 'nyan'
+    }));
 });
 
-gulp.task('watch', function(done) {
+gulp.task('watch', function() {
     gulp.watch(paths.ts, ['build', 'mocha']);
     gulp.watch(paths.test, ['mocha']);
 })
