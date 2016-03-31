@@ -1,4 +1,6 @@
 
+// npm i -D gulp gulp-typescript gulp-concat gulp-plumber gulp-mocha espower-typescript
+// typings --ambient --save empower mocha node power-assert power-assert-formatter
 var gulp = require('gulp');
 var typescript = require('gulp-typescript');
 var concat = require('gulp-concat');
@@ -8,7 +10,7 @@ var mocha = require('gulp-mocha');
 var espowerTypescript = require('espower-typescript/guess');
 
 var typescriptProject = typescript.createProject({
-    target: "ES5", 
+    target: "es5", 
     removeComments: true, 
     sortOutput: true
 });
@@ -33,12 +35,12 @@ gulp.task('mocha', function() {
     .pipe(typescript(typescriptProject))
     .pipe(concat("test.js"))
     .pipe(gulp.dest('./build'))
-
     .pipe(mocha({
         reporter: 'nyan'
     }));
 });
 
+// build & test automatically
 gulp.task('watch', function() {
     gulp.watch(paths.ts, ['build', 'mocha']);
     gulp.watch(paths.test, ['mocha']);
