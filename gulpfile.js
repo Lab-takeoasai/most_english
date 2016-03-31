@@ -36,10 +36,7 @@ gulp.task('mocha', function(done) {
     .on('end', done);
 });
 
-gulp.task('test', function(done) {
-    // mocha --compilers ts:espower-typescript/guess test/**/*.ts
-})
-
 gulp.task('watch', function(done) {
-    gulp.watch(path.ts, 'build');
+    gulp.watch(paths.ts, ['build', 'mocha']);
+    gulp.watch(paths.test, ['mocha']);
 })
